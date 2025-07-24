@@ -57,20 +57,15 @@ export function PkSearch() {
   const handleSearch = async () => {
     const trimmedQuery = query.trim()
     
-    try {
-      setError(null)
-      
-      // Validate input
-      if (!validatePublicKey(trimmedQuery)) {
-        return
-      }
-      
-      // Navigate to the key page
-      router.push(`/${encodeURIComponent(trimmedQuery)}`)
-      
-    } catch (navigationError) {
-      setError("Failed to navigate to key details. Please try again.")
+    setError(null)
+    
+    // Validate input
+    if (!validatePublicKey(trimmedQuery)) {
+      return
     }
+    
+    // Navigate to the key page
+    router.push(`/${encodeURIComponent(trimmedQuery)}`)
   }
 
   // Handle input changes and clear errors

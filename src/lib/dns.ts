@@ -76,29 +76,29 @@ export function getBadgeColor(recordType: DnsRecordType): string {
 }
 
 
-export function getDnsRecord(record: any): DnsRecord {
+export function getDnsRecord(record: { name: string; rdata: { type: string; address?: string; target?: string; nsdname?: string; value?: string }; ttl: number }): DnsRecord {
     console.log("- Record", record);
-    let recordType = record.rdata.type as DnsRecordType;
+    const recordType = record.rdata.type as DnsRecordType;
     // Remove the last element (public key) from the DNS name
-    let nameParts = record.name.split(".").slice(0, -1);
+    const nameParts = record.name.split(".").slice(0, -1);
     // If the name is empty, set it to @, marking a root record
-    let name = nameParts.length > 0 ? nameParts.join(".") : "@";
-    let value;
+    const name = nameParts.length > 0 ? nameParts.join(".") : "@";
+    let value: string;
     switch (recordType) {
         case DnsRecordType.A:
         case DnsRecordType.AAAA:
-            value = record.rdata.address;
+            value = record.rdata.address || "-";
             break;
         case DnsRecordType.CNAME:
         case DnsRecordType.HTTPS:
         case DnsRecordType.SVCB:
-            value = record.rdata.target;
+            value = record.rdata.target || "-";
             break;
         case DnsRecordType.NS:
-            value = record.rdata.nsdname;
+            value = record.rdata.nsdname || "-";
             break;
         case DnsRecordType.TXT:
-            value = record.rdata.value;
+            value = record.rdata.value || "-";
             break;
         default:
             value = "-";
