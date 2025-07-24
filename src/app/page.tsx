@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, Suspense } from "react"
 import { Button } from "@/components/ui/button"
 import { ArrowLeft, Copy, CheckCircle } from "lucide-react"
 import { DnsRecordRow } from "@/components/dns-record-row"
@@ -24,7 +24,7 @@ type PkarrPacket = {
   compressedSize: number | null
 }
 
-export default function DomainDigger() {
+function DomainDiggerContent() {
   const searchParams = useSearchParams()
   const router = useRouter()
   const publicKey = searchParams.get('id')
@@ -188,5 +188,23 @@ export default function DomainDigger() {
           </div>
         )}
       </main>
+  )
+}
+
+export default function DomainDigger() {
+  return (
+    <Suspense fallback={
+      <main className="flex flex-col items-center justify-center px-4" style={{ minHeight: 'calc(100vh - 200px)' }}>
+        <h1 className="text-4xl font-bold mb-1 text-center">Resolvable sovereign keys, now</h1>
+        <div className="flex flex-col space-y-4 text-base mb-10">
+          <p className="text-muted-foreground text-center">
+            Add your pubky and share with your friends so they can fetch and watch your records
+          </p>
+        </div>
+        <PkSearch />
+      </main>
+    }>
+      <DomainDiggerContent />
+    </Suspense>
   )
 }
