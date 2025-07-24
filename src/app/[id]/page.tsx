@@ -129,7 +129,7 @@ export default function ResolverPage() {
                     <SkeletonRow key={index} index={index} />
                   ))
                 ) : (
-                  pkarrPacket.records?.map((record: any, index: number) => (
+                  pkarrPacket.records?.map((record: DnsRecord, index: number) => (
                     <DnsRecordRow
                       key={index}
                       dnsRecord={record}

@@ -1,6 +1,4 @@
-import { Button } from "@/components/ui/button"
-import { Cog, Fingerprint } from "lucide-react"
-import { ThemeToggle } from "@/components/theme-toggle"
+import { Fingerprint } from "lucide-react"
 import Link from "next/link"
 
 export function SiteHeader() {
