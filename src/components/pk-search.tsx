@@ -64,8 +64,8 @@ export function PkSearch() {
       return
     }
     
-    // Navigate to the key page
-    router.push(`/${encodeURIComponent(trimmedQuery)}`)
+    // Navigate to the key page using query parameter
+    router.push(`/?id=${encodeURIComponent(trimmedQuery)}`)
   }
 
   // Handle input changes and clear errors
