@@ -1,3 +1,5 @@
+import { Utils } from '@synonymdev/pkarr'
+
 /**
  * DNS Record Types with badge styling
  * Colors match the existing purple/indigo theme
@@ -76,7 +78,7 @@ export function getBadgeColor(recordType: DnsRecordType): string {
 }
 
 
-export function getDnsRecord(record: { name: string; rdata: { type: string; address?: string; target?: string; nsdname?: string; value?: string }; ttl: number }): DnsRecord {
+export function getDnsRecord(record: { name: string; rdata: { type: string; address?: string; target?: string; nsdname?: string; params?: any, value?: string }; ttl: number }): DnsRecord {
     console.log("- Record", record);
     const recordType = record.rdata.type as DnsRecordType;
     // Remove the last element (public key) from the DNS name
@@ -90,9 +92,10 @@ export function getDnsRecord(record: { name: string; rdata: { type: string; addr
             value = record.rdata.address || "-";
             break;
         case DnsRecordType.CNAME:
+          value = record.rdata.target || "-";
         case DnsRecordType.HTTPS:
         case DnsRecordType.SVCB:
-            value = record.rdata.target || "-";
+            value = Utils.formatRecordValue(record.rdata) || "-";
             break;
         case DnsRecordType.NS:
             value = record.rdata.nsdname || "-";

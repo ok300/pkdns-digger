@@ -9,7 +9,7 @@ import { PkarrProvider } from "@/providers/pkarr-provider"
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "PKDNS Digger",
+  title: "dig PKDNS",
   description: "Resolvable sovereign keys, now",
 }
 
