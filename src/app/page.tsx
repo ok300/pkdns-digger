@@ -10,7 +10,8 @@ import { SkeletonRow } from "@/components/row-skeleton"
 import { NoRecordsFound } from "@/components/no-records-found"
 import { ClientError } from "@/components/client-error"
 import { usePkarr } from "@/providers/pkarr-provider"
-import { PkSearch } from "@/components/pk-search"
+import { PkSearch } from "@/components/pages/landing/pk-search"
+import { saveRecentKey } from "@/lib/utils"
 
 // Constants
 const SKELETON_ROWS = 8
@@ -53,6 +54,9 @@ function DomainDiggerContent() {
           setPkarrPacket({ records: null, lastUpdated: null, compressedSize: null });
           return;
         }
+
+        // Save the key in local storage
+        saveRecentKey(publicKey)        
         
         setPkarrPacket({
           records: resolvedPacket.records.map(getDnsRecord),

@@ -1,16 +1,18 @@
 "use client"
 
 import { useState, useRef, useEffect } from "react"
-import { Search, AlertCircle, X, Clipboard, Globe, Tag, Trash2, HelpCircle } from "lucide-react"
+import { Search, Clipboard, Globe, HelpCircle } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { useRouter } from "next/navigation"
+import { KeyHistory } from "./key-history"
+import { KeyAlert } from "./key-alert"
+import { Header } from "./header"
 
 export function PkSearch() {
   const [query, setQuery] = useState("")
   const [isFocused, setIsFocused] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [showAlert, setShowAlert] = useState(false)
-  const [recentKeys] = useState(Array(10).fill("kzz343fphekkrxeh6zgxe7aawzcb6otydooocoim8fgqekezizuo"))
   const inputRef = useRef<HTMLInputElement>(null)
   const router = useRouter()
 
@@ -158,49 +160,13 @@ export function PkSearch() {
     return trimmedKey.length === 52 && zbase32Regex.test(trimmedKey)
   }
 
-  // Handle clicking a recent key
-  const handleRecentKeyClick = (key: string) => {
-    setQuery(key)
-    if (validatePublicKey(key)) {
-      handleSearch()
-    }
-  }
-
-  const handleDelete = (e: React.MouseEvent, key: string) => {
-    e.stopPropagation() // Prevent triggering the button click
-    // Add delete functionality here
-  }
-
-  const handleTag = (e: React.MouseEvent, key: string) => {
-    e.stopPropagation() // Prevent triggering the button click
-    // Add tag functionality here
-  }
-
   return (
     <>
-      {/* Error Alert */}
-      {showAlert && error && (
-        <div className="fixed top-4 right-4 z-50 flex items-center gap-2 bg-red-500/90 backdrop-blur-sm text-white px-4 py-3 rounded-lg shadow-lg border border-red-400/50 transition-all duration-300 ease-in-out animate-in slide-in-from-right-full">
-          <AlertCircle className="h-4 w-4 flex-shrink-0" />
-          <span className="text-sm font-medium">{error}</span>
-          <button
-            onClick={dismissAlert}
-            className="ml-2 hover:bg-red-600/50 rounded-full p-1 transition-colors"
-            aria-label="Dismiss error"
-          >
-            <X className="h-3 w-3" />
-          </button>
-        </div>
-      )}
+      <KeyAlert showAlert={showAlert} error={error} dismissAlert={dismissAlert} />
       <main className="grid grid-rows-12 px-4 h-[calc(100vh-8rem)] w-full max-w-4xl mx-auto gap-8">
         <div className="row-span-9 flex items-center">
           <div className="bg-[#1d1d20] rounded-lg p-20 backdrop-blur-sm w-full text-center">
-            <h1 className="text-4xl font-bold text-white mb-2">Resolvable sovereign keys, now</h1>
-            <div className="flex items-center justify-center gap-2 mb-8">
-              <p className="text-lg text-muted-foreground">Find and manage PKDNS records for any pubky</p>
-              <HelpCircle className="h-5 w-5 text-muted-foreground" />
-            </div>
-
+            <Header />
             <div className="relative">
               <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
                 <Search className="h-5 w-5 text-muted-foreground" />
@@ -254,48 +220,7 @@ export function PkSearch() {
             </div>
           </div>
         </div>
-
-        {/* Recent Keys List */}
-        <div className="row-span-3 flex flex-col overflow-hidden h-full max-w-2xl mx-auto w-full">
-          {recentKeys.length > 0 && !error && (
-            <div className="flex flex-col gap-2 w-full h-full">
-              <div className="text-sm text-muted-foreground font-medium">Recent Keys</div>
-              <div className="bg-[#131313] rounded-lg overflow-hidden p-2 backdrop-blur-sm h-[25rem]">
-                <div className="flex flex-col overflow-y-auto h-full hover:[&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar]:w-0 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-white/10 [&::-webkit-scrollbar-thumb]:rounded-full">
-                  {recentKeys.map((key, index) => (
-                    <div
-                      key={index}
-                      className="group flex items-center justify-between text-left px-4 py-4 text-sm text-muted-foreground hover:text-white font-medium truncate transition-all duration-200 border-b border-[#27272a] last:border-0 mx-2"
-                    >
-                      <button
-                        onClick={() => router.push(`/?id=${key}`)}
-                        className="truncate text-left"
-                      >
-                        {key}
-                      </button>
-                      <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-all duration-200">
-                        <button
-                          onClick={(e) => handleTag(e, key)}
-                          className="p-1.5 text-[#474747] hover:text-white hover:bg-white/10 rounded-full transition-colors"
-                          title="Tag this key"
-                        >
-                          <Tag className="h-4 w-4" />
-                        </button>
-                        <button
-                          onClick={(e) => handleDelete(e, key)}
-                          className="p-1.5 text-[#474747] hover:text-[#5b40ea]/70 hover:bg-[#5b40ea]/10 rounded-full transition-colors"
-                          title="Remove from history"
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </button>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          )}
-        </div>
+        <KeyHistory />
       </main>
     </>
   )
