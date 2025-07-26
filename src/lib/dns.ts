@@ -95,7 +95,7 @@ export function getDnsRecord(record: { name: string; rdata: { type: string; addr
           value = record.rdata.target || "-";
         case DnsRecordType.HTTPS:
         case DnsRecordType.SVCB:
-            value = Utils.formatRecordValue(record.rdata) || "-";
+            value = formatPkarrKeyValue(record.rdata) || Utils.formatRecordValue(record.rdata) || "-";
             break;
         case DnsRecordType.NS:
             value = record.rdata.nsdname || "-";
@@ -113,4 +113,17 @@ export function getDnsRecord(record: { name: string; rdata: { type: string; addr
         value,
         ttl: record.ttl
     }
+}
+
+/**
+ * TODO: This is a hack until we publish the homeserver record properly
+ * Formats a PKARR key value into the standard format
+ * @param rdata The raw rdata object
+ */
+export function formatPkarrKeyValue(rdata: any): string | null {
+  if (rdata.priority === 0 && rdata.target === "") {
+    return "1 . " + Object.entries(rdata.params).map(([k,v]) => `${k}=${v}`).join(" ")
+  } else {
+    return null
+  }
 }
