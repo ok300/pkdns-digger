@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation"
 import { KeyHistory } from "./key-history"
 import { KeyAlert } from "./key-alert"
 import { Header } from "./header"
+import { Utils } from "@synonymdev/pkarr"
 
 export function PkSearch() {
   const [query, setQuery] = useState("")
@@ -50,6 +51,11 @@ export function PkSearch() {
 
     if (!zbase32Regex.test(trimmedKey)) {
       setError("Invalid public key format. Must be z-base-32 encoded")
+      return false
+    }
+
+    if (!Utils.validatePublicKey(trimmedKey)){
+      setError("Invalid Ed25519 publickey")
       return false
     }
 
@@ -157,7 +163,7 @@ export function PkSearch() {
   const isValidKey = (key: string): boolean => {
     const zbase32Regex = /^[13456789abcdefghijkmnopqrstuwxyz]+$/i
     const trimmedKey = key.trim()
-    return trimmedKey.length === 52 && zbase32Regex.test(trimmedKey)
+    return trimmedKey.length === 52 && zbase32Regex.test(trimmedKey) && Utils.validatePublicKey(trimmedKey)
   }
 
   return (

@@ -63,7 +63,7 @@ export function KeyHistory() {
                               setEditingTag(null)
                             }
                           }}
-                          className="h-8 bg-[#27272a] border-none text-sm focus-visible:ring-0 focus-visible:ring-offset-0"
+                          className="h-8 bg-[#27272a] border border-dashed border-[#474747] text-sm focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-[#474747]"
                           placeholder="Enter tag..."
                           autoFocus
                         />
