@@ -1,7 +1,7 @@
 "use client"
 
-import { useState, useRef, useEffect } from "react"
-import { Search, Clipboard, Globe, HelpCircle } from "lucide-react"
+import { useState, useRef, useEffect, useCallback } from "react"
+import { Search, Clipboard, Globe } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { useRouter } from "next/navigation"
 import { KeyHistory } from "./key-history"
@@ -31,7 +31,7 @@ export function PkSearch() {
   }, [error])
 
   // Validate public key format (pkarr uses z-base-32)
-  const validatePublicKey = (key: string): boolean => {
+  const validatePublicKey = useCallback((key: string): boolean => {
     // z-base-32 characters for pkarr public keys
     const zbase32Regex = /^[13456789abcdefghijkmnopqrstuwxyz]+$/i
 
@@ -54,7 +54,7 @@ export function PkSearch() {
     }
 
     return true
-  }
+  }, [setError])
 
   // Handle search functionality with error control
   const handleSearch = async () => {
@@ -112,7 +112,7 @@ export function PkSearch() {
     try {
       const text = await navigator.clipboard.readText()
       setQuery(text)
-    } catch (err) {
+    } catch {
       setError("Failed to paste from clipboard")
     }
   }
@@ -132,14 +132,14 @@ export function PkSearch() {
   }
 
   // Handle alert dismiss
-  const dismissAlert = () => {
+  const dismissAlert = useCallback(() => {
     setShowAlert(false)
     setError(null)
     // Reset input styles by re-validating current input
     if (query.trim().length > 0) {
       validatePublicKey(query)
     }
-  }
+  }, [query, validatePublicKey])
 
   // Auto-dismiss effect
   useEffect(() => {
@@ -151,7 +151,7 @@ export function PkSearch() {
       }, 5000)
       return () => clearTimeout(timer)
     }
-  }, [error])
+  }, [error, dismissAlert])
 
   // Check if current input is valid without setting error
   const isValidKey = (key: string): boolean => {

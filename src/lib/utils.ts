@@ -19,10 +19,11 @@ export function getRecentKeys() {
 export function saveRecentKey(key: string) {
   const keys = getRecentKeys()
   // Get existing tag if any, otherwise empty string
-  let tag = keys[key] || ""
+  const tag = keys[key] || ""
   
   // Create new object without the key
   // Keep only the 9 most recent keys (excluding current key)
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { [key]: _, ...rest } = keys;
   const remainingKeys = Object.fromEntries(
     Object.entries(rest).slice(0, RECENT_KEYS_MAX_LENGTH - 1)

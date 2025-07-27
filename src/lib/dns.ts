@@ -77,8 +77,21 @@ export function getBadgeColor(recordType: DnsRecordType): string {
   return 'bg-gray-500/30'
 }
 
+interface RdataParams {
+  [key: string]: string | number | boolean
+}
 
-export function getDnsRecord(record: { name: string; rdata: { type: string; address?: string; target?: string; nsdname?: string; params?: any, value?: string }; ttl: number }): DnsRecord {
+interface DnsRdata {
+  type: string
+  address?: string
+  target?: string
+  nsdname?: string
+  params?: RdataParams
+  value?: string
+  priority?: number
+}
+
+export function getDnsRecord(record: { name: string; rdata: DnsRdata; ttl: number }): DnsRecord {
     console.log("- Record", record);
     const recordType = record.rdata.type as DnsRecordType;
     // Remove the last element (public key) from the DNS name
@@ -120,9 +133,9 @@ export function getDnsRecord(record: { name: string; rdata: { type: string; addr
  * Formats a PKARR key value into the standard format
  * @param rdata The raw rdata object
  */
-export function formatPkarrKeyValue(rdata: any): string | null {
+export function formatPkarrKeyValue(rdata: DnsRdata): string | null {
   if (rdata.priority === 0 && rdata.target === "") {
-    return "1 . " + Object.entries(rdata.params).map(([k,v]) => `${k}=${v}`).join(" ")
+    return "1 . " + Object.entries(rdata.params || {}).map(([k,v]) => `${k}=${v}`).join(" ")
   } else {
     return null
   }
