@@ -25,14 +25,14 @@ export function KeyHistory() {
   const handleTag = (e: React.MouseEvent, key: string) => {
     e.stopPropagation()
     setEditingTag(key)
-    setTagValue(getKeyTag(key) || "")  // Initialize with existing tag
+    setTagValue(getKeyTag(key) || "")
   }
 
   const handleTagSubmit = (key: string, tag: string, e?: React.MouseEvent) => {
     if (e) e.stopPropagation()
     setKeyTag(key, tag)
     setRecentKeys(getRecentKeys())
-    setEditingTag(null)  // Close the input field
+    setEditingTag(null)
   }
   
   return (
@@ -85,11 +85,6 @@ export function KeyHistory() {
                             {getKeyTag(key)}
                           </span>
                         </button>
-                        {/* {getKeyTag(key) && (
-                          <span className="text-xs text-[#5b40ea]/60 mt-1">
-                            {getKeyTag(key)}
-                          </span>
-                        )} */}
                       </>
                     )}
                   </div>
