@@ -1,4 +1,4 @@
-# PKARR digger
+# PKARR DIG
 
 Find your piece of digital sovereignty
 
