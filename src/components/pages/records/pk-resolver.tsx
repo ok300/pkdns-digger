@@ -45,7 +45,7 @@ export function PkResolver({ publicKey }: { publicKey: string }) {
 
             try {
                 setLoading(true);
-                const resolvedPacket = await client.resolve(publicKey);
+                const resolvedPacket = await client.resolveMostRecent(publicKey);
 
                 if (!resolvedPacket) {
                     console.log("No packet found for key:", publicKey);
