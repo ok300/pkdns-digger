@@ -1,4 +1,4 @@
-import { Fingerprint } from "lucide-react"
+import { Fingerprint, Github } from "lucide-react"
 import Link from "next/link"
 
 export function SiteHeader() {
@@ -17,6 +17,15 @@ export function SiteHeader() {
           <Cog className="w-5 h-5" />
         </Button>
         <ThemeToggle /> */}
+        <Link
+          href="https://github.com/pubky/pkdns-digger"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center space-x-1 text-sm hover:text-purple-500"
+        >
+          <Github className="w-4 h-4" />
+          <span>Edit on GitHub</span>
+        </Link>
       </div>
     </header>
   )
