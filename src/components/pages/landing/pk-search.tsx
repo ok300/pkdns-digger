@@ -64,7 +64,8 @@ export function PkSearch() {
 
   // Handle search functionality with error control
   const handleSearch = async () => {
-    const trimmedQuery = query.trim()
+    // Remove leading "pk:" and any following whitespace if present.
+    const trimmedQuery = query.replace(/^pk:\s*/i, '').trim()
 
     setError(null)
 
